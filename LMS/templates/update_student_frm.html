@@ -1,0 +1,39 @@
+{% for row in student_frm_pass  %}
+<p>      
+  <label class="w3-text-brown"><b>STUDENT ID</b></label>
+  <input id="update_student_id" class="w3-input w3-border w3-yellow w3-sand" value="{{row.id}}" type="text" disabled>
+</p>
+
+<p>      
+  <label class="w3-text-brown"><b>STUDENT NAME</b></label>
+  <input id="update_student_name" class="w3-input w3-border w3-sand" value="{{row.student_name}}" type="text">
+</p>
+
+<p>      
+   <label class="w3-text-brown"><b>EMAIL ID</b></label>
+   <input id="update_student_email" class="w3-input w3-border w3-sand" value="{{row.student_email}}" type="text">
+</p>
+
+<p>      
+   <label class="w3-text-brown"><b>PHONE NUMBER</b></label>
+   <input id="update_student_phone" class="w3-input w3-border w3-sand" value="{{row.student_contact}}" type="text">
+</p>
+
+<p>      
+    <label class="w3-text-brown"><b>SECURITY KEY</b></label>
+   <input id="update_student_key" type="text" class="w3-input w3-border w3-sand" value="{{row.student_password}}">
+</p>
+
+<p>      
+    <label class="w3-text-brown"><b>ADDRESS</b></label>
+    <textarea id="update_student_address" class="w3-input w3-border w3-sand" rows="2" cols="50">{{row.student_address}}</textarea>
+</p>
+
+<p>
+<label class="w3-text-brown"><b>ACCESS</b></label>
+<select class="w3-select w3-border w3-input w3-border w3-sand" id="update_student_access">
+    <option value="1" selected>GRANTED</option>
+    <option value="0">DENIED</option>
+</select>
+</p>
+{% endfor %}

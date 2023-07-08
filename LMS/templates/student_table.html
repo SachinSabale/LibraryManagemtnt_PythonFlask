@@ -1,0 +1,208 @@
+<table id="student_table" style="width: 100%;">
+    <thead>
+    <tr style="background-color: #D6EEEE">
+    <th>STUDENT ID</th>
+    <th>STUDENT NAME</th>
+    <th>EMAIL ID</th>
+    <th>PHONE NUMBER</th>
+    <th>SECURITY KEY</th>
+    <th>ADDRESS</th>
+    <th>REGISTRATION</th>
+    <th>ACCESS</th>
+    <th>ACTION</th>
+    </tr>
+</thead>
+<tbody>
+    {% for row in student_section  %}
+    <tr id="student_row">
+    <td id="student_id">{{row.id}}</td>
+    <td>{{row.student_name}}</td>
+    <td>{{row.student_email}}</td>
+    <td>{{row.student_contact}}</td>
+    <td>{{row.student_password}}</td>
+    <td>{{row.student_address}}</td>
+    <td>{{row.registration_date}}</td>
+        {% if row.student_status == 1 %}
+        <td class="w3-pale-green">GRANTED</td>
+        {%else%}
+        <td class="w3-pale-red">DENIED</td>
+        {% endif %}
+    <td class="w3-pale-blue">
+        <i onclick="document.getElementById('update_student_modal').style.display='none'" style="margin-right: 15px;" class="fa fa-edit w3-xlarge w3-text-purple update_student"></i>
+        <i class="fa fa-trash w3-xlarge w3-text-red remove_student"></i>
+    </td>
+    </tr>
+    {% endfor %} 
+</tbody>
+    </table>
+    <!-- Student update modal open -->
+<div id="update_student_modal" class="w3-modal w3-animate-zoom">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+      <header class="w3-container w3-teal"> 
+        <h2 style="text-align: center;">UPDATE STUDENT</h2>
+      </header>
+      <div class="w3-container">
+       <!-- modal content start -->
+          <form id="student_update_frm" style="max-height: 450px; overflow: auto;" class="w3-container">
+           
+          </form>
+       <!-- modal content end -->
+      </div>
+      <footer style="text-align: center;" class="w3-container w3-teal">
+        <p>
+          <button id="new_student_update" class="w3-button w3-green w3-border w3-border-green w3-round-large">UPDATE</button>
+          <button id="student_update_frm_reset" class="w3-button w3-blue w3-border w3-border-blue w3-round-large">RESET</button>
+          <button onclick="document.getElementById('update_student_modal').style.display='none'" class="w3-button w3-red w3-border w3-border-red w3-round-large">CLOSE</button>
+        </p>
+      </footer>
+    </div>
+  </div>
+  <!-- Student update modal close -->
+    <script>
+    function load_student()
+  {
+    query = '';
+   $.ajax({
+    url:"/student_search",
+    method:"POST",
+    data: {
+        query:query
+    },
+    success:function(data)
+    {
+      $('#fetch_student_table').html(data);
+      $("#fetch_student_table").append(data.htmlresponse);
+    }
+   });
+  }
+
+        $(".remove_student").on("click",function(){
+        var student_id = $(this).closest("tr").find("#student_id").text();
+        $.ajax({
+            type: "POST",
+            url: "/delete_student",
+            data: {
+                student_id : student_id
+            },
+            success: function(student_del_response) 
+            {
+                if(student_del_response == 1)
+                {
+                    Swal.fire({
+                        title: "Please wait...!", //Text can be changed example Success!
+                        html: "Deleting <strong></strong> Information.<br/><br/>",//Text can be changed
+                        type: "success", //Text can be changed example success, warning, danger
+                        timer: 2000, //Set the time interval (in milliseconds).
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            const content = Swal.getHtmlContainer()
+                            const $ = content.querySelector.bind(content)
+                            Swal.showLoading()
+                            timerInterval = setInterval(() => {
+                                Swal.getHtmlContainer().querySelector('strong')
+                                    .textContent = ('')
+                                    .toFixed(0)
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        },
+                        showConfirmButton: false, //Turn off confirmation button, if true, it will show ok button, click again.
+                    }).then(function() {
+                        load_student();
+                    });
+                }
+                else
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed!',
+                        html: 'Something wrong...'
+                      })
+                }
+            }
+            });
+    });
+
+    $(".update_student").on("click",function()
+    {
+        var student_id = $(this).closest("tr").find("#student_id").text();
+        $("#update_student_modal").css("display","block");
+
+        $.ajax({
+                type: "POST",
+                url: "/student_by_id",
+                data: {
+                    student_id : student_id
+                },
+                success: function(student_fetch_response) 
+                {
+                    $('#student_update_frm').html(student_fetch_response);
+                    $("#student_update_frm").append(student_fetch_response.htmlresponse);
+                }
+              });
+    });
+
+
+    $("#new_student_update").on("click",function(){
+        var student_id      = $("#update_student_id").val();
+        var student_name    = $("#update_student_name").val();
+        var student_email   = $("#update_student_email").val();
+        var student_phone   = $("#update_student_phone").val();
+        var security_key    = $("#update_student_key").val();
+        var student_address = $("#update_student_address").val();
+        var student_access  = $("#update_student_access").val();
+
+        $.ajax({
+                type: "POST",
+                url: "/student_update",
+                data: {
+                    student_id      : student_id,
+                    student_name    : student_name,
+                    student_email   : student_email,
+                    student_phone   : student_phone,
+                    security_key    : security_key,
+                    student_address : student_address,
+                    student_access  : student_access
+                },
+                success: function(student_update_response) 
+                {
+                   if(student_update_response == "1")
+                   {
+                    $("#update_student_modal").css("display","none");
+                    Swal.fire({
+                        title: "Please wait...!", //Text can be changed example Success!
+                        html: "Updating <strong></strong> Information.<br/><br/>",//Text can be changed
+                        type: "success", //Text can be changed example success, warning, danger
+                        timer: 2000, //Set the time interval (in milliseconds).
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            const content = Swal.getHtmlContainer()
+                            const $ = content.querySelector.bind(content)
+                            Swal.showLoading()
+                            timerInterval = setInterval(() => {
+                                Swal.getHtmlContainer().querySelector('strong')
+                                    .textContent = ('')
+                                    .toFixed(0)
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        },
+                        showConfirmButton: false, //Turn off confirmation button, if true, it will show ok button, click again.
+                    }).then(function() {
+                        load_student();
+                    });
+                   }
+                   else
+                   {
+                    Swal.fire({
+                            icon: 'error',
+                            title: 'Update failed!',
+                            html: '<span style="color:red;">Something is wrong..</span>'
+                          })
+                   }
+                }
+              });
+    });
+    </script>

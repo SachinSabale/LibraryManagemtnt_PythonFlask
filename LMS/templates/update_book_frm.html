@@ -1,0 +1,36 @@
+{% for row in book_frm_pass  %}
+<p>      
+  <label class="w3-text-brown"><b>BOOK ID</b></label>
+  <input id="update_book_id" class="w3-input w3-border w3-yellow w3-sand" value="{{row.id}}" type="text" disabled>
+</p>
+
+<p>      
+  <label class="w3-text-brown"><b>BOOK NAME</b></label>
+  <input id="update_book_name" class="w3-input w3-border w3-sand" value="{{row.book_name}}" type="text">
+</p>
+
+<p>      
+   <label class="w3-text-brown"><b>AUTHOR NAME</b></label>
+   <input id="update_author_name" class="w3-input w3-border w3-sand" value="{{row.author_name}}" type="text">
+</p>
+
+<p>      
+   <label class="w3-text-brown"><b>BOOK NUMBER</b></label>
+   <input id="update_book_number" class="w3-input w3-border w3-sand" value="{{row.book_number}}" type="text">
+</p>
+
+<p>      
+   <label class="w3-text-brown"><b>BOOK PRICE (IN RUPEES)</b></label>
+   <input id="update_book_price" type="number" class="w3-input w3-border w3-sand" min="1" max="any" value="{{row.book_price}}">
+</p>
+
+<p>      
+   <label class="w3-text-brown"><b>OLD STOCK</b></label>
+   <input id="update_book_old_stock" type="number" class="w3-input w3-border w3-sand" min="1" max="any" value="{{row.book_stock}}" disabled>
+</p>
+
+<p>      
+   <label class="w3-text-brown"><b>RENEW STOCK</b></label>
+   <input id="update_book_renew_stock" type="number" class="w3-input w3-border w3-sand" min="1" max="any" value="0">
+</p>
+{% endfor %}

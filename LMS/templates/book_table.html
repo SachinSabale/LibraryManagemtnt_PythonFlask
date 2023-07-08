@@ -1,0 +1,209 @@
+
+<table id="book_table" style="width: 100%;">
+    <thead>
+    <tr style="background-color: #D6EEEE">
+    <th>BOOK ID</th>
+    <th>BOOK NAME</th>
+    <th>AUTHOR NAME</th>
+    <th>BOOK NUMBER</th>
+    <th>BOOK PRICE</th>
+    <th>STOCK</th>
+    <th>ACTION</th>
+    </tr>
+</thead>
+<tbody>
+    {% for row in book_section  %}
+    <tr id="book_row">
+    <td id="book_id">{{row.id}}</td>
+    <td>{{row.book_name}}</td>
+    <td>{{row.author_name}}</td>
+    <td>{{row.book_number}}</td>
+    <td>{{row.book_price}}</td>
+        {% if row.book_stock <= 0 %}
+        <td class="w3-pale-red">{{row.book_stock}}</td>
+        {%else%}
+        <td class="w3-pale-green">{{row.book_stock}}</td>
+        {% endif %}
+    <td class="w3-pale-blue">
+        <i onclick="document.getElementById('update_book_modal').style.display='none'" style="margin-right: 15px;" class="fa fa-edit w3-xlarge w3-text-purple update_book"></i>
+        <i class="fa fa-trash w3-xlarge w3-text-red remove_book"></i>
+    </td>
+    </tr>
+    {% endfor %} 
+</tbody>
+    </table>
+    <!-- Book update modal open -->
+<div id="update_book_modal" class="w3-modal w3-animate-zoom">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+      <header class="w3-container w3-teal"> 
+        <h2 style="text-align: center;">UPDATE BOOK</h2>
+      </header>
+      <div class="w3-container">
+       <!-- modal content start -->
+          <form id="book_update_frm" class="w3-container">
+           
+          </form>
+       <!-- modal content end -->
+      </div>
+      <footer style="text-align: center;" class="w3-container w3-teal">
+        <p>
+          <button id="new_book_update" class="w3-button w3-green w3-border w3-border-green w3-round-large">UPDATE</button>
+          <button id="book_update_frm_reset" class="w3-button w3-blue w3-border w3-border-blue w3-round-large">RESET</button>
+          <button onclick="document.getElementById('update_book_modal').style.display='none'" class="w3-button w3-red w3-border w3-border-red w3-round-large">CLOSE</button>
+        </p>
+      </footer>
+    </div>
+  </div>
+  <!-- Book update modal close -->
+    <script>
+    function load_book()
+  {
+    query = '';
+   $.ajax({
+    url:"/booksearch",
+    method:"POST",
+    data: {
+        query:query
+    },
+    success:function(data)
+    {
+      $('#fetch_book_table').html(data);
+      $("#fetch_book_table").append(data.htmlresponse);
+    }
+   });
+  }
+
+        $(".remove_book").on("click",function(){
+        var book_id = $(this).closest("tr").find("#book_id").text();
+        $.ajax({
+            type: "POST",
+            url: "/delete_book",
+            data: {
+                book_id : book_id
+            },
+            success: function(book_del_response) 
+            {
+                if(book_del_response == 1)
+                {
+                    Swal.fire({
+                        title: "Please wait...!", //Text can be changed example Success!
+                        html: "Deleting <strong></strong> Information.<br/><br/>",//Text can be changed
+                        type: "success", //Text can be changed example success, warning, danger
+                        timer: 2000, //Set the time interval (in milliseconds).
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            const content = Swal.getHtmlContainer()
+                            const $ = content.querySelector.bind(content)
+                            Swal.showLoading()
+                            timerInterval = setInterval(() => {
+                                Swal.getHtmlContainer().querySelector('strong')
+                                    .textContent = ('')
+                                    .toFixed(0)
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        },
+                        showConfirmButton: false, //Turn off confirmation button, if true, it will show ok button, click again.
+                    }).then(function() {
+                        load_book();
+                    });
+                }
+                else
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed!',
+                        html: 'Failed to delete book'
+                      })
+                }
+            }
+            });
+    });
+
+    $(".update_book").on("click",function()
+    {
+        var book_id = $(this).closest("tr").find("#book_id").text();
+        $("#update_book_modal").css("display","block");
+
+        $.ajax({
+                type: "POST",
+                url: "/book_by_id",
+                data: {
+                    book_id : book_id
+                },
+                success: function(book_fetch_response) 
+                {
+                    $('#book_update_frm').html(book_fetch_response);
+                    $("#book_update_frm").append(book_fetch_response.htmlresponse);
+                }
+              });
+    });
+
+    $("#new_book_update").on("click",function(){
+        var book_id     = $("#update_book_id").val();
+        var book_name   = $("#update_book_name").val();
+        var author_name = $("#update_author_name").val();
+        var book_number = $("#update_book_number").val();
+        var book_price  = $("#update_book_price").val();
+        var old_stock   = parseInt($("#update_book_old_stock").val());
+        var new_stock   = $("#update_book_renew_stock").val();
+        if(new_stock < 0 || new_stock == "")
+        {
+            var new_stock = 0;  
+        }
+        var set_stock = parseInt(new_stock);
+        var renew_stock = parseInt(old_stock + set_stock);
+
+        $.ajax({
+                type: "POST",
+                url: "/book_update",
+                data: {
+                    book_id     : book_id,
+                    book_name   : book_name,
+                    author_name : author_name,
+                    book_number : book_number,
+                    book_price  : book_price,
+                    renew_stock : renew_stock
+                },
+                success: function(book_update_response) 
+                {
+                   if(book_update_response == "1")
+                   {
+                    $("#update_book_modal").css("display","none");
+                    Swal.fire({
+                        title: "Please wait...!", //Text can be changed example Success!
+                        html: "Updating <strong></strong> Information.<br/><br/>",//Text can be changed
+                        type: "success", //Text can be changed example success, warning, danger
+                        timer: 2000, //Set the time interval (in milliseconds).
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            const content = Swal.getHtmlContainer()
+                            const $ = content.querySelector.bind(content)
+                            Swal.showLoading()
+                            timerInterval = setInterval(() => {
+                                Swal.getHtmlContainer().querySelector('strong')
+                                    .textContent = ('')
+                                    .toFixed(0)
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        },
+                        showConfirmButton: false, //Turn off confirmation button, if true, it will show ok button, click again.
+                    }).then(function() {
+                        load_book();
+                    });
+                   }
+                   else
+                   {
+                    Swal.fire({
+                            icon: 'error',
+                            title: 'Update failed!',
+                            html: '<span style="color:red;">Something is wrong..</span>'
+                          })
+                   }
+                }
+              });
+    });
+    </script>

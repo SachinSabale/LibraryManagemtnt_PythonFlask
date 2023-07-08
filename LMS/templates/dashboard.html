@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="../static/css/main.css">
+<script src="../static/script/main.js"></script>
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+</head>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div id="mainline" class="w3-bar w3-top w3-large" style="z-index:4; background-color: teal;">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span id="timeClock" class="w3-bar-item w3-right"></span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-animate-left" style="z-index:3;width:300px; background-color: #D3D3D3;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="../static/img/avatar3.png" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      <span>Welcome, <strong>Harshada</strong></span><br>
+      <a id='flipCamera' href="#" class="w3-bar-item w3-button"><i class="fa fa-camera-retro"></i></a>
+      <a id="hide_cam" href="#" class="w3-bar-item w3-button"><i class="fa fa-pause"></i></a>
+      <a id="display_cam" href="#" class="w3-bar-item w3-button"><i class="fa fa-camera"></i></a>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5><b>LIBRARY MANAGEMENT</b></h5>
+  </div>
+  <div style="font-weight: bolder;" class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
+    <a href="/admin_dashboard" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>  DASHBOARD</a>
+    <a href="/manage_books" class="w3-bar-item w3-button w3-padding"><i class="fa fa-book fa-fw"></i>  MANAGE BOOKS</a>
+    <a href="/manage_student" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  MANAGE STUDENTS</a>
+    <a href="/book_issue" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  ISSUE BOOK</a>
+    <a href="/return_books" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  RETURN BOOK</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  SETTING</a>
+    
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:0px;">
+    <p><span id="mq_line" style="width:100%; padding: 3px;" class="w3-tag w3-teal w3-text-white w3-round-xlarge"><marquee behavior="" direction="">
+      The purpose of a library management system is to operate a library with efficiency and at reduced costs. The system being entirely automated streamlines all the tasks involved in operations of the library. The activities of book circulation recording and stock checking are done by the software. Such software eliminates the need for repetitive manual work and minimizes the chances of errors.
+
+The library management system software helps in reducing operational costs. Managing a library manually is labor intensive and an immense amount of paperwork is involved. An automated system reduces the need for manpower and stationery. This leads to lower operational costs.
+
+The system saves time for both the user and the librarian. With just a click the user can search for the books available in the library. The librarian can answer queries with ease regarding the availability of books. Adding, removing or editing the database is a simple process. Adding new members or cancelling existing memberships can be done with ease.
+
+Stock checking and verification of books in the library can be done within a few hours. The automated system saves a considerable amount of time as opposed to the manual system.
+
+The library management system software makes the library a smart one by organizing the books systematically by author, title and subject. This enables users to search for books quickly and effortlessly.
+
+Students need access to authentic information. An advanced organized library is an integral part of any educational institution. In this digital age a web based library management system would be ideal for students who can access the library’s database on their smartphones.
+    </marquee></span></p>
+  </header>
+
+  <div class="w3-row-padding w3-margin-bottom">
+    <div class="w3-quarter">
+      <div class="w3-container w3-red w3-padding-16 dash_box f1">
+        <a style="text-decoration: none;" href="/manage_books">
+        <div class="w3-left"><i class="fa fa-book w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>52</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>BOOKS</h4>
+      </a>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-blue w3-padding-16 dash_box f1">
+        <a style="text-decoration: none;" href="/manage_student">
+        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>99</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>STUDENTS</h4>
+      </a>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-teal w3-padding-16 dash_box f1">
+        <a style="text-decoration: none;" href="/book_issue">
+        <div class="w3-left"><i class="fa fa-id-card w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>23</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>ISSUE</h4>
+      </a>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div  class="w3-padding-16 w3-text-white dash_box no_signal">
+        <video id="camera_output" style="display:none; outline-offset: -1px ; border-radius: 15px;" src="../static/img/signal.gif" width="100%" height="138px"></video>
+        <div id="signal_lost">
+        <div class="w3-left"><i class="fa fa-plug w3-xxxlarge no_signal_plug"></i></div>
+        <div class="">
+          <h3 style="text-align: center; font-size: 100%;" id="no_signal_warn">NO SIGNAL</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4 id="no_signal_title" style="text-align: center; font-weight:bold; " class="w3-black">CAMERA 01</h4>
+      </div>
+
+    </div>
+    </div>
+  </div>
+  <div class="w3-container">
+    <video id="expand_camera" style="display: none; outline-offset: -1px ; border-radius: 15px;" src="../static/img/signal.gif" width="100%" height="450px"></video>
+  <img id="contain_img" class="when_signal" src="../static/img/w2.webp" alt="" width="100%" height="450px" srcset="">
+  </div>
+
+  <!-- Footer -->
+
+
+  <!-- End page content -->
+</div>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+
+var myVar = setInterval(myTimer, 1000);
+function myTimer() {
+    var d = new Date();
+    var t = d.toLocaleTimeString();
+    $("#timeClock").html(t);
+}
+</script>
+
+</body>
+</html>

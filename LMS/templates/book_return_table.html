@@ -1,0 +1,77 @@
+<table id="book_issue_table" style="width: 100%;">
+    <thead>
+    <tr style="background-color: #D6EEEE">
+    <th>ISSUE ID</th>
+    <th>STUDENT ID</th>
+    <th>BOOK ID</th>
+    <th>BOOK NUMBER</th>
+    <th>ISSUE ON</th>
+    <th>RETURN DATE</th>
+    <th>STATUS</th>
+    </tr>
+</thead>
+<tbody>
+    {% for row in return_book_table  %}
+    <tr id="student_row">
+    <td id="issue_id">{{row.id}}</td>
+    <td>{{row.student_name}}</td>
+    <td>{{row.book_id}}</td>
+    <td>{{row.book_number}}</td>
+    <td>{{row.issue_date}}</td>
+    <td>{{row.return_date}}</td>
+        {% if row.return_status == 0 %}
+        <td class="w3-pale-red"><button class="w3-button w3-block w3-teal clt_btn collect_now_btn">COLLECT</button></td>
+        {%else%}
+        <td class="w3-pale-green"><button class="w3-button w3-block w3-green clt_btn">COLLECTED</button></td>
+        {% endif %}
+    </tr>
+    {% endfor %} 
+</tbody>
+    </table>
+
+<div id="return_book_modal" class="w3-modal w3-animate-zoom">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+          <header class="w3-container w3-teal"> 
+            <h2 style="text-align: center;">RETURN BOOK DETAILS</h2>
+          </header>
+          <div class="w3-container">
+           <!-- modal content start -->
+              <form id="return_book_frm" style="max-height: 450px; overflow: auto;" class="w3-container">
+               
+              </form>
+           <!-- modal content end -->
+          </div>
+          <footer style="text-align: center;" class="w3-container w3-teal">
+            <p>
+              <button id="return_book_now" class="w3-button w3-green w3-border w3-border-green w3-round-large">COLLECT</button>
+              <button id="return_book_frm_reset" class="w3-button w3-blue w3-border w3-border-blue w3-round-large">RESET</button>
+              <button onclick="document.getElementById('return_book_modal').style.display='none'" class="w3-button w3-red w3-border w3-border-red w3-round-large">CLOSE</button>
+            </p>
+          </footer>
+        </div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    $(".collect_now_btn").on("click",function()
+    {
+        var student_id = $(this).closest("tr").find("#student_id").text();
+        $("#return_book_modal").css("display","block");
+
+        $.ajax({
+                type: "POST",
+                url: "/student_by_id",
+                data: {
+                    student_id : student_id
+                },
+                success: function(student_fetch_response) 
+                {
+                    $('#student_update_frm').html(student_fetch_response);
+                    $("#student_update_frm").append(student_fetch_response.htmlresponse);
+                }
+              });
+    });
+
+});
+</script>

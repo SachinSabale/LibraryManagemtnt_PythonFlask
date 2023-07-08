@@ -1,0 +1,33 @@
+{% for row in book_details_frm_pass  %}
+{% if row.book_name != "" %}
+<p>
+    <label class="w3-text-brown"><b>BOOK NUMBER</b></label>
+    <input id="issue_book_number" class="w3-input w3-border w3-sand" value="{{row.book_number}}" type="text" disabled>
+ </p>
+
+<p>
+    <label class="w3-text-brown"><b>BOOK PRICE</b></label>
+    <input id="issue_book_price" class="w3-input w3-border w3-sand" value="{{row.book_price}}" type="text" disabled>
+</p>
+
+<p>      
+    <label class="w3-text-brown"><b>STOCK LEFT</b></label>
+    <input id="issue_book_stock" type="number" class="w3-input w3-border w3-sand" min="1" max="any" value="{{row.book_stock}}" disabled>
+ </p>
+{%endif%}
+{%else%}
+<p>
+    <label class="w3-text-brown"><b>BOOK NUMBER</b></label>
+    <input id="issue_book_number" class="w3-input w3-border w3-sand" value="" type="text" disabled>
+ </p>
+
+<p>
+    <label class="w3-text-brown"><b>BOOK PRICE</b></label>
+    <input id="issue_book_price" class="w3-input w3-border w3-sand" value="0" type="text" disabled>
+</p>
+
+<p>      
+    <label class="w3-text-brown"><b>STOCK LEFT</b></label>
+    <input id="issue_book_stock" type="number" class="w3-input w3-border w3-sand" min="1" max="any" value="0" disabled>
+ </p>
+{% endfor %}
